@@ -33,6 +33,7 @@ def preprocess_text(text):
 
 
 path = "en_core_web_sm-3.0.0"
+
 def coreferencing(text):
     # nlp = spacy.load("en_coreference_web_trf")
     nlp = spacy.load(path)

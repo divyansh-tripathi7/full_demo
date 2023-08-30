@@ -19,6 +19,8 @@ for pdf_file in pdf_files:
         "docPath": pdf_path
     }
 
+    print(message)
+
     # Publish message to DocExtractor topic
     producer_extractor.send("DocExtractor", value=json.dumps(message).encode('utf-8'))
 

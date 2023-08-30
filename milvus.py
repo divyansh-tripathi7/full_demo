@@ -49,8 +49,8 @@ vector_db: Milvus = Milvus(
 )
 
 
-query1 = "what is sunbird about?"
+# query1 = "what is sunbird about?"
 
-ans = vector_db.similarity_search(query = query1)
+# ans = vector_db.similarity_search(query = query1)
 
-print("answer is : ", ans)
+# print("answer is : ", ans)
