@@ -1,6 +1,7 @@
 from kafka import KafkaProducer, KafkaConsumer
 import json
-from MilvusDB import *
+from milvus import *
+from Helper_Functions import *
 
 # Initialize Kafka producer for DocEnrich
 # producer_enrich = KafkaProducer(bootstrap_servers='localhost:9092')

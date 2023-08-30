@@ -1,17 +1,28 @@
+# from Helper_Functions import *
 from kafka import KafkaProducer, KafkaConsumer
 import json
-from Helper_Functions import *
+from milvus import *
 
-# Kafka consumer for DocEnrich topic
-consumer_enrich = KafkaConsumer("DocEnrich", bootstrap_servers='localhost:9092')
+# Initialize Kafka producer for DocEnrich
+producer_enrich = KafkaProducer(bootstrap_servers='localhost:9092')
 
-# Initialize Milvus collection here
-vector_db = ...
+# Kafka consumer for DocExtractor topic
+consumer_extractor = KafkaConsumer("DocEnricher", bootstrap_servers='localhost:9092')
 
-for message in consumer_enrich:
+for message in consumer_extractor:
     message_data = json.loads(message.value.decode('utf-8'))
+    pdf_path = message_data["docPath"]
+    doc_contents = get_pdf_text(pdf_path)
     
-    for snippet in message_data["docSnippets"]:
-        # Ingest each snippet into Milvus collection
-        processed_snippet = coreferencing(snippet)  # Apply coreference if needed
-        vector_db.ingest([processed_snippet])
+    # Enrich the message with docContents and docSnippets
+    enriched_message = {
+        "docID": message_data["docID"],
+        "docPath": pdf_path,
+        "docContents": doc_contents,
+        "docSnippets": get_text_chunks(doc_contents)  # Modify to suit your needs
+    }
+
+    # Publish enriched message to DocEnrich topic
+    producer_enrich.send("DocEnrich", value=json.dumps(enriched_message).encode('utf-8'))
+
+producer_enrich.close()  # Close the producer when done

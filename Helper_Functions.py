@@ -30,7 +30,9 @@ def get_text_chunks(text):
 def preprocess_text(text):
     text = text.lower()
     return text
-path = "en_core_web_sm-3.0.0/en_core_web_sm/en_core_web_sm-3.0.0"
+
+
+path = "en_core_web_sm-3.0.0"
 def coreferencing(text):
     # nlp = spacy.load("en_coreference_web_trf")
     nlp = spacy.load(path)
@@ -51,5 +53,5 @@ def coreferencing(text):
 def create_embeddings(text):
     model = INSTRUCTOR('hkunlp/instructor-base')
     instruction = "Represent the text:"
-    embeddings = model.encode([[instruction , sentence]])
+    embeddings = model.encode([[instruction , text]])
     return embeddings
